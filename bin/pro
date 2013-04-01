@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# vi: set filetype=ruby fileencoding=UTF-8 shiftwidth=2 tabstop=2 expandtab
+
+require "pro"
+#require_relative "./lib/pro"
+
+HELP = <<END
+pro is a command to help you manage your git repositories.
+
+commands:
+pro search <query> - prints path of git repo that matches query.
+pro help - display help
+END
+
+command = ARGV.shift || 'help'
+
+case command
+when 'search'
+  puts Pro.find_repo(ARGV.first)
+when 'help'
+  puts HELP 
+end
+
