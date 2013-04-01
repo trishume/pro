@@ -12,14 +12,14 @@ defaults to `pd`.
 
 ### Examples
 
-    **~/randomFolder/ $** pd pro
-    **pro/ $** pwd 
+    ~/randomFolder/ $ pd pro
+    pro/ $ pwd 
     /Users/tristan/Box/Dev/Projects/pro
-    **pro/ $** pd eye
-    **eyeLike/ $** pwd
+    pro/ $ pd eye
+    eyeLike/ $ pwd
     /Users/tristan/Box/Dev/Projects/eyeLike
-    **eyeLike/ $** pd web
-    **Website/ $** pwd
+    eyeLike/ $ pd web
+    Website/ $ pwd
     /Users/tristan/Box/Dev/Website/
 
 ## Installation
