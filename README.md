@@ -12,6 +12,7 @@ defaults to `pd`.
 
 ### Examples
 
+```bash
     ~/randomFolder/ $ pd pro
     pro/ $ pwd 
     /Users/tristan/Box/Dev/Projects/pro
@@ -21,18 +22,11 @@ defaults to `pd`.
     eyeLike/ $ pd web
     Website/ $ pwd
     /Users/tristan/Box/Dev/Website/
+```
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'pro'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Pro is bundled as a Ruby gem. To install run:
 
     $ gem install pro
 
