@@ -41,7 +41,10 @@ module Pro
     end
     base
   end
-  def self.find_repo(name)
+
+  # Searches for all the git repositories in the base directory.
+  # returns an array of [repo_name, path] pairs.
+  def self.repo_list
     repos = []
     Find.find(Pro.base_dir) do |path|
       if FileTest.directory?(path)
@@ -53,9 +56,19 @@ module Pro
         end
       end
     end
+    repos
+  end
+
+  # Fuzzy search for a git repository by name
+  # Returns the full path to the repository.
+  def self.find_repo(name)
+    repos = Pro.repo_list
     match = FuzzyMatch.new(repos, :read => :first).find(name)
     match[1] unless match.nil?
   end
+
+  # Adds a shell function to the shell config files that
+  # allows easy directory changing.
   def self.install_cd
     puts CD_INFO
     print "Continue with installation (yN)? "
