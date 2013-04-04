@@ -1,6 +1,7 @@
 require "pro/version"
 require "find"
 require "fuzzy_match"
+require "colored"
 
 SHELL_FUNCTION = <<END
 # pro cd function
@@ -25,6 +26,9 @@ END
 
 
 module Pro
+  DIRTY_MESSAGE = 'uncommitted'.red
+  UNPUSHED_MESSAGE = 'unpushed'.blue
+  JOIN_STRING = ' + '
   # Finds the base directory where repos are kept
   # Checks the environment variable PRO_BASE and the
   # file .proBase
@@ -65,6 +69,48 @@ module Pro
     repos = Pro.repo_list
     match = FuzzyMatch.new(repos, :read => :first).find(name)
     match[1] unless match.nil?
+  end
+
+  # prints a status list showing repos with
+  # unpushed commits or uncommitted changes
+  def self.status
+    repos = Pro.repo_list
+    max_name = repos.map {|pair| pair.first.length}.max + 1
+    repos.each do |pair|
+      path = pair.last
+      status = Pro.repo_status(path)
+      next if status.empty?
+      name = format("%-#{max_name}s",pair.first).bold
+      puts "#{name} > #{status}"
+    end
+  end
+
+  # returns a short status message for the repo
+  def self.repo_status(path)
+    messages = []
+    messages << DIRTY_MESSAGE unless Pro.repo_clean?(path)
+    messages << UNPUSHED_MESSAGE if Pro.repo_unpushed?(path)
+    messages.join(JOIN_STRING)
+  end
+
+  # Checks if there are any uncommitted changes
+  def self.repo_clean?(path)
+    status = ""
+    Dir.chdir(path) do
+      status = `git status 2>/dev/null`
+    end
+    return status.end_with?("(working directory clean)\n")
+  end
+
+  # Finds if there are any commits which have not been pushed to origin
+  def self.repo_unpushed?(path)
+    unpushed = ""
+    Dir.chdir(path) do
+      branch_ref = `/usr/bin/git symbolic-ref HEAD 2>/dev/null`
+      branch = branch_ref.chomp.split('/').last
+      unpushed = `git cherry -v origin/#{branch} 2>/dev/null`
+    end
+    return !(unpushed.empty?)
   end
 
   # Adds a shell function to the shell config files that

@@ -15,6 +15,7 @@ Gem::Specification.new do |spec|
 
   #spec.add_runtime_dependency 'commander','~> 4.1.2'  
   spec.add_runtime_dependency 'fuzzy_match'
+  spec.add_runtime_dependency 'colored'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

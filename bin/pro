@@ -38,6 +38,8 @@ when 'search'
   puts Pro.find_repo(ARGV.first)
 when 'install'
   Pro.install_cd
+when 'status'
+  Pro.status
 when 'help'
   puts HELP 
 end
