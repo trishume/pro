@@ -56,7 +56,7 @@ when 'run'
     command = ARGV.join(" ")
   else
     print "Command: "
-    command = STDIN.gets
+    command = STDIN.gets.chomp
   end
   Pro.run_command(command) 
 when 'help'
