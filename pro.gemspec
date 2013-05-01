@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tristan Hume"]
   spec.email         = ["tris.hume@gmail.com"]
   spec.description   = %q{Lightweight git project tool.}
-  spec.summary       = %q{Command line tool that allows you to quickly cd to git projects.}
+  spec.summary       = %q{Command line tool that allows you to quickly cd to git projects and other handy things.}
   spec.homepage      = "http://github.com/trishume/pro"
   spec.license       = "MIT"
 
