@@ -16,6 +16,10 @@ a ~/.proBase file containing the path.
 
 Commands ===============
 pro search <query> - prints path of git repo that matches query.
+pro status - prints a list of all repos with uncommitted or unpushed changes.
+pro status <name> - prints the output of 'git status' on the repo.
+pro run - prompts for a command to run in all git repos.
+pro run <command> - runs the given command in all git repos.
 pro install - Install the pro cd command. cd to a directory by fuzzy git repo matching.
 pro help - display help
 
@@ -39,7 +43,22 @@ when 'search'
 when 'install'
   Pro.install_cd
 when 'status'
-  Pro.status
+  if ARGV.first
+    path = Pro.find_repo(ARGV.first)
+    Dir.chdir(path) do
+      puts `git status`
+    end
+  else
+    Pro.status
+  end
+when 'run'
+  unless ARGV.empty?
+    command = ARGV.join(" ")
+  else
+    print "Command: "
+    command = STDIN.gets
+  end
+  Pro.run_command(command) 
 when 'help'
   puts HELP 
 end

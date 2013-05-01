@@ -71,6 +71,21 @@ module Pro
     match[1] unless match.nil?
   end
 
+  def self.run_command(command, confirm = true)
+    if confirm
+      print "Do you really want to run '#{command.bold}' on all repos [Y/n]? "
+      ans = STDIN.gets
+      return if ans.chomp != "Y"
+    end
+    repos = Pro.repo_list
+    repos.each do |r|
+      Dir.chdir(r[1])
+      result = `#{command}`
+      puts "#{r.first}:".bold.red
+      puts result
+    end
+  end
+
   # prints a status list showing repos with
   # unpushed commits or uncommitted changes
   def self.status
