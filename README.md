@@ -44,11 +44,21 @@ For example, searching all your repos for ruby files:
 Notice that it double checks before running so you don't accidentally run `rm -rf *` on all
 your projects.
 
+## The Pro Base
+
+Pro can use a base directory to speed up its search for git repos. By default it
+uses your home folder.
+
+To set the base directory either create a file at `~/.proBase` containing the
+base path or set the environment variable PRO_BASE.
+
 ## Installation
 
 Pro is bundled as a Ruby gem. To install run:
 
     $ gem install pro
+
+You may also want to set your pro base. See the above section.
 
 ## Usage
 
