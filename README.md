@@ -16,7 +16,7 @@ its name.
 You can install the `pd` tool (name configurable) by running `pro install`.
 Once you have it you can do some pretty intense cd'ing:
 
-![pd demo](http://thume.ca/assets/postassets/pro/pd_screen.png/pd_screen.png)
+![pd demo](http://thume.ca/assets/postassets/pro/pd_screen.png)
 
 ## State of the Repos Address
 
