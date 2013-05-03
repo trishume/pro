@@ -115,7 +115,7 @@ module Pro
     Dir.chdir(path) do
       status = `git status 2>/dev/null`
     end
-    return status.end_with?("(working directory clean)\n")
+    return status.end_with?("(working directory clean)\n") || status.end_with?("working directory clean\n")
   end
 
   # Finds if there are any commits which have not been pushed to origin
