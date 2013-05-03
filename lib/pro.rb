@@ -4,6 +4,7 @@ require "fuzzy_match"
 require "colored"
 
 SHELL_FUNCTION = <<END
+
 # pro cd function
 {{name}}() {
   projDir=$(pro search $1)
