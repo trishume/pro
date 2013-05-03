@@ -7,11 +7,11 @@ HELP = <<END
 pro is a command to help you manage your git repositories.
 
 Base Directory ==========
-Pro works from a base directory for efficiency.
+pro works from a base directory for efficiency.
 This is the folder that contains all your other git repositories;
 they don't have to be at the base level, just somewhere down the tree.
 
-To set the base directory set the PRO_BASE environment variable or make 
+To set the base directory set the PRO_BASE environment variable or make
 a ~/.proBase file containing the path.
 
 Commands ===============
@@ -24,13 +24,13 @@ pro install - Install the pro cd command. cd to a directory by fuzzy git repo ma
 pro help - display help
 
 CD Command ============
-You can use the 'pro install' command to install a wrapper function that allows
+You can use the 'pro install' command to install a wrapper shell function that allows
 you to cd to git repositories in your Pro Base wherever you are based on fuzzy matching.
 
 Example:
 
   ~/randomFolder/ $ pd pro
-  pro/ $ pwd 
+  pro/ $ pwd
   /Users/tristan/Box/Dev/Projects/pro
 
 END
@@ -58,8 +58,8 @@ when 'run'
     print "Command: "
     command = STDIN.gets.chomp
   end
-  Pro.run_command(command) 
+  Pro.run_command(command)
 when 'help'
-  puts HELP 
+  puts HELP
 end
 
