@@ -4,6 +4,9 @@
 It includes features like instantly cd'ing to your git repos and getting a
 status overview. You can also run commands in every git repository.
 
+Note that pro only currently works on Unix systems. If you experience speed issues
+see the section on setting a pro base.
+
 ## CD'ing to a project's repository
 
 Cd'ing to your projects is harder than it should be.
