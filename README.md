@@ -1,8 +1,8 @@
 # Pro
 
-`pro` is a little utility to wrangle your git repositories.
+`pro` is a command to wrangle your git repositories.
 It includes features like instantly cd'ing to your git repos and getting a
-status overview. You can also run commands in every git repository.
+status overview, and running an arbitrary command in every git repo.
 
 Note that pro only currently works on Unix systems. If you experience speed issues
 see the section on setting a pro base.
@@ -10,13 +10,13 @@ see the section on setting a pro base.
 ## CD'ing to a project's repository
 
 Cd'ing to your projects is harder than it should be.
-There are [many tools](https://github.com/rupa/z) that try and solve this
+There are [attempts](https://github.com/rupa/z) to solve this
 problem using frequency and recency.
-Pro solves the problem by fuzzy searching only git repositories.
+`pro` solves the problem by fuzzy searching only git repositories.
 
-The `pd` command allows you to instantly CD to any git repo by fuzzy matching
-its name.
-You can install the `pd` tool (name configurable) by running `pro install`.
+The supplementary `pd` command allows you to instantly CD to any git repo by
+fuzzy matching its name. It is implemented as a shell function.
+You can install `pd` (name configurable) by running `pro install`.
 Once you have it you can do some pretty intense cd'ing:
 
 ![pd demo](http://thume.ca/assets/postassets/pro/pd_screen.png)
@@ -44,12 +44,12 @@ For example, searching all your repos for ruby files:
 
 ![pro run](http://thume.ca/assets/postassets/pro/pro_run.png)
 
-Notice that it double checks before running so you don't accidentally run `rm -rf *` on all
-your projects.
+Notice that it double checks before running so you don't accidentally run
+`rm -rf *` on all your projects.
 
 ## The Pro Base
 
-Pro can use a base directory to speed up its search for git repos. By default it
+`pro` can use a base directory to speed up its search for git repos. By default it
 uses your home folder.
 
 To set the base directory either create a file at `~/.proBase` containing the
@@ -57,22 +57,22 @@ base path or set the environment variable PRO_BASE.
 
 ## Installation
 
-Pro is bundled as a Ruby gem. To install run:
+`pro` is bundled as a Ruby gem. To install run:
 
     $ gem install pro
 
-You may also want to set your pro base. See the above section.
+You may also want to set your Pro Base. See the above section.
 
 ## Usage
 
     pro is a command to help you manage your git repositories.
 
     Base Directory ==========
-    Pro works from a base directory for efficiency.
+    pro works from a base directory for efficiency.
     This is the folder that contains all your other git repositories;
     they don't have to be at the base level, just somewhere down the tree.
 
-    To set the base directory set the PRO_BASE environment variable or make 
+    To set the base directory set the PRO_BASE environment variable or make
     a ~/.proBase file containing the path.
 
     Commands ===============
@@ -85,13 +85,13 @@ You may also want to set your pro base. See the above section.
     pro help - display help
 
     CD Command ============
-    You can use the 'pro install' command to install a wrapper function that allows
+    You can use the 'pro install' command to install a wrapper shell function that allows
     you to cd to git repositories in your Pro Base wherever you are based on fuzzy matching.
 
     Example:
 
       ~/randomFolder/ $ pd pro
-      pro/ $ pwd 
+      pro/ $ pwd
       /Users/tristan/Box/Dev/Projects/pro
 
 

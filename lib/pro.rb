@@ -19,7 +19,7 @@ arbitrarily deep in your PRO_BASE based on fuzzy matching.
 Example:
 
   ~/randomFolder/ $ pd pro
-  pro/ $ pwd 
+  pro/ $ pwd
   /Users/tristan/Box/Dev/Projects/pro
 
 ========
@@ -141,7 +141,7 @@ module Pro
     name = 'pd' if name.empty?
     # sub into function
     func = SHELL_FUNCTION.sub("{{name}}",name)
-    ['~/.bashrc','~/.zshrc'].each do |rel_path|
+    ['~/.profile', '~/.bashrc','~/.zshrc'].each do |rel_path|
       # check if file exists
       path = File.expand_path(rel_path)
       next unless File.exists?(path)
