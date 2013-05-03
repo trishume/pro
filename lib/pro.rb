@@ -7,7 +7,7 @@ SHELL_FUNCTION = <<END
 
 # pro cd function
 {{name}}() {
-  projDir=$(pro search $1)
+  local projDir=$(pro search $1)
   cd ${projDir}
 }
 END
