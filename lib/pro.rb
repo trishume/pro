@@ -103,7 +103,7 @@ module Pro
   # returns a short status message for the repo
   def self.repo_status(path)
     messages = []
-    messages << DIRTY_MESSAGE unless Pro.repo_clean?(path)
+    messages << (Pro.repo_clean?(path) ? CLEAN_MESSAGE : DIRTY_MESSAGE)
     messages << UNPUSHED_MESSAGE if Pro.repo_unpushed?(path)
     messages.join(JOIN_STRING)
   end
@@ -114,7 +114,7 @@ module Pro
     Dir.chdir(path) do
       status = `git status 2>/dev/null`
     end
-    return status.end_with?("(working directory clean)\n")
+    return status.end_with?("working directory clean\n")
   end
 
   # Finds if there are any commits which have not been pushed to origin
