@@ -7,8 +7,18 @@ SHELL_FUNCTION = <<END
 
 # pro cd function
 {{name}}() {
-  local projDir=$(pro search $1)
-  cd ${projDir}
+  if [ -z $1 ]
+  then
+      if [ -z $PRO_BASE ]
+      then
+          eval cd $(cat ~/.probase)
+      else
+          cd $PRO_BASE
+      fi
+  else
+      local projDir=$(pro search $1)
+      cd ${projDir}
+  fi
 }
 END
 
