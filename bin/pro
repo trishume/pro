@@ -12,7 +12,10 @@ This is the folder that contains all your other git repositories;
 they don't have to be at the base level, just somewhere down the tree.
 
 To set the base directory set the PRO_BASE environment variable or make
-a ~/.proBase file containing the path.
+a ~/.proBase file containing the path. The .proBase file can contain many lines
+each with a path to a folder to search. Pro will search the path in the PRO_BASE
+variable as well as all paths in the .proBase file. If neither exists then the home
+directory will be used.
 
 Commands ===============
 pro search <query> - prints path of git repo that matches query.

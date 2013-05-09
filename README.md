@@ -54,8 +54,11 @@ Notice that it double checks before running so you don't accidentally run
 `pro` can use a base directory to speed up its search for git repos. By default it
 uses your home folder.
 
-To set the base directory either create a file at `~/.proBase` containing the
-base path or set the environment variable PRO_BASE.
+To set the base directory set the PRO_BASE environment variable or make
+a ~/.proBase file containing the path. The .proBase file can contain many lines
+each with a path to a folder to search. Pro will search the path in the PRO_BASE
+variable as well as all paths in the .proBase file. If neither exists then the home
+directory will be used.
 
 ## Installation
 
@@ -75,7 +78,10 @@ You may also want to set your Pro Base. See the above section.
     they don't have to be at the base level, just somewhere down the tree.
 
     To set the base directory set the PRO_BASE environment variable or make
-    a ~/.proBase file containing the path.
+    a ~/.proBase file containing the path. The .proBase file can contain many lines
+    each with a path to a folder to search. Pro will search the path in the PRO_BASE
+    variable as well as all paths in the .proBase file. If neither exists then the home
+    directory will be used.
 
     Commands ===============
     pro search <query> - prints path of git repo that matches query.
@@ -90,12 +96,16 @@ You may also want to set your Pro Base. See the above section.
     You can use the 'pro install' command to install a wrapper shell function that allows
     you to cd to git repositories in your Pro Base wherever you are based on fuzzy matching.
 
+    Just running 'pd' cd's to the pro base.
+
     Example:
 
       ~/randomFolder/ $ pd pro
       pro/ $ pwd
       /Users/tristan/Box/Dev/Projects/pro
-
+      pro/ $ pd
+      Dev/ $ pwd
+      /Users/tristan/Box/Dev
 
 ## Contributing
 

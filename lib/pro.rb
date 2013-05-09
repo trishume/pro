@@ -33,31 +33,37 @@ module Pro
   # Finds the base directory where repos are kept
   # Checks the environment variable PRO_BASE and the
   # file .proBase
-  def self.base_dir()
+  def self.base_dirs()
+    bases = []
     # check environment first
     base = ENV['PRO_BASE']
-    return base if base
+    bases << base if base
     # next check proBase file
     path = ENV['HOME'] + "/.proBase"
-    base = ENV['HOME'] # default to home
     if File.exists?(path)
-      base = IO.read(path).chomp
-      base = File.expand_path(base)
+      # read lines of the pro base file
+      bases += IO.read(path).split("\n").map {|p| File.expand_path(p.strip)}
     end
-    base
+    # strip bases that do not exist
+    bases.select! {|b| File.exists?(b)}
+    # if no bases then return home
+    bases << ENV['HOME'] if bases.empty?
+    bases
   end
 
   # Searches for all the git repositories in the base directory.
   # returns an array of [repo_name, path] pairs.
   def self.repo_list
     repos = []
-    Find.find(Pro.base_dir) do |path|
-      if FileTest.directory?(path)
-        # is this folder a git repo
-        if File.exists?(path+"/.git")
-          base_name = File.basename(path)
-          repos << [base_name,path]
-          Find.prune
+    Pro.base_dirs.each do |base|
+      Find.find(base) do |path|
+        if FileTest.directory?(path)
+          # is this folder a git repo
+          if File.exists?(path+"/.git")
+            base_name = File.basename(path)
+            repos << [base_name,path]
+            Find.prune
+          end
         end
       end
     end
@@ -69,7 +75,7 @@ module Pro
   # 
   # If name is nil return the pro base.
   def self.find_repo(name)
-    return Pro.base_dir unless name
+    return Pro.base_dirs.first unless name
     repos = Pro.repo_list
     match = FuzzyMatch.new(repos, :read => :first).find(name)
     match[1] unless match.nil?
