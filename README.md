@@ -4,8 +4,8 @@
 It includes features like instantly cd'ing to your git repos and getting a
 status overview, and running an arbitrary command in every git repo.
 
-Note that pro only currently works on Unix systems. If you experience speed issues
-see the section on setting a pro base.
+Note that pro only currently works on Unix systems. **If you experience speed issues
+see the section on setting a pro base.**
 
 ## CD'ing to a project's repository
 
@@ -20,6 +20,8 @@ You can install `pd` (name configurable) by running `pro install`.
 Once you have it you can do some pretty intense cd'ing:
 
 ![pd demo](http://thume.ca/assets/postassets/pro/pd_screen.png)
+
+**Protip:** running `pd` with no arguments changes to the pro base.
 
 ## State of the Repos Address
 

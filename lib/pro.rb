@@ -66,7 +66,10 @@ module Pro
 
   # Fuzzy search for a git repository by name
   # Returns the full path to the repository.
+  # 
+  # If name is nil return the pro base.
   def self.find_repo(name)
+    return Pro.base_dir unless name
     repos = Pro.repo_list
     match = FuzzyMatch.new(repos, :read => :first).find(name)
     match[1] unless match.nil?

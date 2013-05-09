@@ -27,11 +27,16 @@ CD Command ============
 You can use the 'pro install' command to install a wrapper shell function that allows
 you to cd to git repositories in your Pro Base wherever you are based on fuzzy matching.
 
+Just running 'pd' cd's to the pro base.
+
 Example:
 
   ~/randomFolder/ $ pd pro
   pro/ $ pwd
   /Users/tristan/Box/Dev/Projects/pro
+  pro/ $ pd
+  Dev/ $ pwd
+  /Users/tristan/Box/Dev
 
 END
 
