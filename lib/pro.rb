@@ -45,7 +45,8 @@ module Pro
       bases += IO.read(path).split("\n").map {|p| File.expand_path(p.strip)}
     end
     # strip bases that do not exist
-    bases.select! {|b| File.exists?(b)}
+    # I know about select! but it doesn't exist in 1.8
+    bases = bases.select {|b| File.exists?(b)}
     # if no bases then return home
     bases << ENV['HOME'] if bases.empty?
     bases

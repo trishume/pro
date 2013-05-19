@@ -69,5 +69,7 @@ when 'run'
   Pro.run_command(command)
 when 'help'
   puts HELP
+when '-v'
+  puts "Pro version #{Pro::VERSION} by Tristan Hume and contributors.\nhttp://github.com/trishume/pro"
 end
 
