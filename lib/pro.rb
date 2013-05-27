@@ -1,4 +1,5 @@
 require "pro/version"
+require "pro/index"
 require "find"
 require "fuzzy_match"
 require "colored"
@@ -30,83 +31,39 @@ module Pro
   DIRTY_MESSAGE = 'uncommitted'.red
   UNPUSHED_MESSAGE = 'unpushed'.blue
   JOIN_STRING = ' + '
-  # Finds the base directory where repos are kept
-  # Checks the environment variable PRO_BASE and the
-  # file .proBase
-  def self.base_dirs()
-    bases = []
-    # check environment first
-    base = ENV['PRO_BASE']
-    bases << base if base
-    # next check proBase file
-    path = ENV['HOME'] + "/.proBase"
-    if File.exists?(path)
-      # read lines of the pro base file
-      bases += IO.read(path).split("\n").map {|p| File.expand_path(p.strip)}
-    end
-    # strip bases that do not exist
-    # I know about select! but it doesn't exist in 1.8
-    bases = bases.select {|b| File.exists?(b)}
-    # if no bases then return home
-    bases << ENV['HOME'] if bases.empty?
-    bases
-  end
-
-  # Searches for all the git repositories in the base directory.
-  # returns an array of [repo_name, path] pairs.
-  def self.repo_list
-    repos = []
-    Pro.base_dirs.each do |base|
-      Find.find(base) do |path|
-        if FileTest.directory?(path)
-          # is this folder a git repo
-          if File.exists?(path+"/.git")
-            base_name = File.basename(path)
-            repos << [base_name,path]
-            Find.prune
-          end
-        end
-      end
-    end
-    repos
-  end
 
   # Fuzzy search for a git repository by name
   # Returns the full path to the repository.
   # 
   # If name is nil return the pro base.
-  def self.find_repo(name)
-    return Pro.base_dirs.first unless name
-    repos = Pro.repo_list
-    match = FuzzyMatch.new(repos, :read => :first).find(name)
+  def self.find_repo(name,index)
+    return index.base_dirs.first unless name
+    match = FuzzyMatch.new(index.to_a, :read => :name).find(name)
     match[1] unless match.nil?
   end
 
-  def self.run_command(command, confirm = true)
+  def self.run_command(command, index, confirm = true)
     if confirm
       print "Do you really want to run '#{command.bold}' on all repos [Y/n]? "
       ans = STDIN.gets
       return if ans.chomp != "Y"
     end
-    repos = Pro.repo_list
-    repos.each do |r|
-      Dir.chdir(r[1])
+    index.each do |r|
+      Dir.chdir(r.path)
       result = `#{command}`
-      puts "#{r.first}:".bold.red
+      puts "#{r.name}:".bold.red
       puts result
     end
   end
 
   # prints a status list showing repos with
   # unpushed commits or uncommitted changes
-  def self.status
-    repos = Pro.repo_list
-    max_name = repos.map {|pair| pair.first.length}.max + 1
-    repos.each do |pair|
-      path = pair.last
-      status = Pro.repo_status(path)
+  def self.status(index)
+    max_name = index.map {|repo| repo.name.length}.max + 1
+    index.each do |r|
+      status = Pro.repo_status(r.path)
       next if status.empty?
-      name = format("%-#{max_name}s",pair.first).bold
+      name = format("%-#{max_name}s",r.name).bold
       puts "#{name} > #{status}"
     end
   end

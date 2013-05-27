@@ -1,5 +1,7 @@
 *.gem
 *.rbc
+*.sublime-workspace
+*.sublime-project
 .bundle
 .config
 .yardoc

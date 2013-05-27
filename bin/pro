@@ -45,19 +45,23 @@ END
 
 command = ARGV.shift || 'help'
 
+def index
+  Pro::Index.new
+end
+
 case command
 when 'search'
-  puts Pro.find_repo(ARGV.first)
+  puts Pro.find_repo(ARGV.first,index)
 when 'install'
   Pro.install_cd
 when 'status'
   if ARGV.first
-    path = Pro.find_repo(ARGV.first)
+    path = Pro.find_repo(ARGV.first,index)
     Dir.chdir(path) do
       puts `git status`
     end
   else
-    Pro.status
+    Pro.status(index)
   end
 when 'run'
   unless ARGV.empty?
@@ -66,7 +70,7 @@ when 'run'
     print "Command: "
     command = STDIN.gets.chomp
   end
-  Pro.run_command(command)
+  Pro.run_command(command,index)
 when 'help'
   puts HELP
 when '-v'
