@@ -5,6 +5,7 @@ module Pro
   # or by searching the file system
   class Indexer
     CACHE_PATH = File.expand_path("~/.proCache")
+    INDEXER_LOCK_PATH = File.expand_path("~/.proCacheLock")
     def initialize
       @base_dirs = find_base_dirs
       @low_cpu = false
@@ -34,9 +35,19 @@ module Pro
     # spins off a background process to update the cache file
     def run_index_process
       fork {
-        @low_cpu = true
-        build_index 
+        index_process unless File.exists?(INDEXER_LOCK_PATH)
       }
+    end
+
+    def index_process
+      @low_cpu = true
+      # create lock so no work duplicated
+      begin
+        File.open(INDEXER_LOCK_PATH, "w") {}
+        build_index
+      ensure
+        File.delete(INDEXER_LOCK_PATH)
+      end
     end
 
     # scan the base directories for git repos
