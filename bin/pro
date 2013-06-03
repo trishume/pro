@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 # vi: set filetype=ruby fileencoding=UTF-8 shiftwidth=2 tabstop=2 expandtab
 
+PRO_DEBUG = false
+
 require "pro"
+require "yaml"
+require "pry" if PRO_DEBUG
 
 HELP = <<END
 pro is a command to help you manage your git repositories.
@@ -45,9 +49,9 @@ END
 
 command = ARGV.shift || 'help'
 
-def index
-  Pro::Index.new
-end
+index = Pro::Indexer.new.index
+
+binding.pry if PRO_DEBUG
 
 case command
 when 'search'

@@ -1,4 +1,5 @@
 require "pro/version"
+require "pro/indexer"
 require "pro/index"
 require "find"
 require "fuzzy_match"
