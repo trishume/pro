@@ -32,6 +32,8 @@ pro status - prints a list of all repos with uncommitted or unpushed changes.
 pro status <name> - prints the output of 'git status' on the repo.
 pro run - prompts for a command to run in all git repos.
 pro run <command> - runs the given command in all git repos.
+pro list - prints the paths to all repos. Intended for scripting.
+pro bases - prints the paths to all bases. Intended for scripting.
 pro install - Install the pro cd command. cd to a directory by fuzzy git repo matching.
 pro help - display help
 
@@ -68,6 +70,8 @@ when 'install'
   pro.install_cd
 when 'list'
   pro.list_repos
+when 'bases'
+  pro.list_bases
 when 'status'
   if ARGV.first
     path = pro.find_repo(ARGV.first)
@@ -88,6 +92,8 @@ when 'run'
 when 'help'
   puts HELP
 when '-v'
-  puts "Pro version #{Pro::VERSION} by Tristan Hume and contributors.\nhttp://github.com/trishume/pro"
+  puts "Pro version #{Pro::VERSION} by Tristan Hume and contributors."
+  puts "Running on Ruby version #{RUBY_VERSION} on platform #{RUBY_PLATFORM}."
+  puts "http://github.com/trishume/pro"
 end
 

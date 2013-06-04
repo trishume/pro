@@ -67,6 +67,13 @@ module Pro
       end
     end
 
+    # prints out all the base directories
+    def list_bases
+      @index.base_dirs.each do |b|
+        puts b
+      end
+    end
+
     # prints a status list showing repos with
     # unpushed commits or uncommitted changes
     def status()
