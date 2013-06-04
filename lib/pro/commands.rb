@@ -126,7 +126,8 @@ module Pro
       name = 'pd' if name.empty?
       # sub into function
       func = SHELL_FUNCTION.sub("{{name}}",name)
-      ['~/.profile', '~/.bashrc','~/.zshrc'].each do |rel_path|
+      did_any = false
+      ['~/.profile', '~/.bashrc','~/.zshrc','~/.bash_profile'].each do |rel_path|
         # check if file exists
         path = File.expand_path(rel_path)
         next unless File.exists?(path)
@@ -137,8 +138,14 @@ module Pro
         File.open(path,'a') do |file|
           file.puts func
         end
+        did_any = true
       end
-      puts "Done! #{name} will be available in new shells."
+      if did_any
+        puts "Done! #{name} will be available in new shells."
+      else
+        STDERR.puts "WARNING: Did not install in any shell dotfiles.".red
+        STDERR.puts "Maybe you should create the shell config file you want.".red
+      end
     end
   end
 end
