@@ -1,11 +1,16 @@
 #!/usr/bin/env ruby
 # vi: set filetype=ruby fileencoding=UTF-8 shiftwidth=2 tabstop=2 expandtab
 
-PRO_DEBUG = false
-
 require "pro"
 require "yaml"
-require "pry" if PRO_DEBUG
+
+$pryAvailable = true
+begin
+  require "pry"
+rescue LoadError
+  $pryAvailable = false
+end
+
 
 HELP = <<END
 pro is a command to help you manage your git repositories.
@@ -47,27 +52,30 @@ Example:
 
 END
 
+# spins of indexer even if index
+# unnecessary such as version command
+index = Pro::Indexer.new.index
+pro = Pro::Commands.new(index)
+
 command = ARGV.shift || 'help'
 
-index = Pro::Indexer.new.index
-
-binding.pry if PRO_DEBUG
-
 case command
+when 'debug'
+  binding.pry if $pryAvailable
 when 'search'
-  puts Pro.find_repo(ARGV.first,index)
+  puts pro.find_repo(ARGV.first)
 when 'install'
-  Pro.install_cd
+  pro.install_cd
 when 'list'
-  Pro.list_repos(index)
+  pro.list_repos
 when 'status'
   if ARGV.first
-    path = Pro.find_repo(ARGV.first,index)
+    path = pro.find_repo(ARGV.first)
     Dir.chdir(path) do
       puts `git status`
     end
   else
-    Pro.status(index)
+    pro.status
   end
 when 'run'
   unless ARGV.empty?
@@ -76,7 +84,7 @@ when 'run'
     print "Command: "
     command = STDIN.gets.chomp
   end
-  Pro.run_command(command,index)
+  pro.run_command(command)
 when 'help'
   puts HELP
 when '-v'
