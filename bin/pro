@@ -58,6 +58,8 @@ when 'search'
   puts Pro.find_repo(ARGV.first,index)
 when 'install'
   Pro.install_cd
+when 'list'
+  Pro.list_repos(index)
 when 'status'
   if ARGV.first
     path = Pro.find_repo(ARGV.first,index)

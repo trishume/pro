@@ -57,6 +57,13 @@ module Pro
     end
   end
 
+  # Prints out the paths to all repositories in all bases
+  def self.list_repos(index)
+    index.each do |r|
+      puts r.path
+    end
+  end
+
   # prints a status list showing repos with
   # unpushed commits or uncommitted changes
   def self.status(index)
