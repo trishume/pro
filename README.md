@@ -4,8 +4,7 @@
 It includes features like instantly cd'ing to your git repos and getting a
 status overview, and running an arbitrary command in every git repo.
 
-Note that pro only currently works on Unix systems. **If you experience speed issues
-see the section on setting a pro base.**
+Note that pro only currently works on Unix systems.
 
 ## CD'ing to a project's repository
 
@@ -51,7 +50,7 @@ Notice that it double checks before running so you don't accidentally run
 
 ## The Pro Base
 
-`pro` can use a base directory to speed up its search for git repos. By default it
+`pro` can use a base directory to narrow down its search for git repos. By default it
 uses your home folder.
 
 To set the base directory set the PRO_BASE environment variable or make
@@ -59,6 +58,15 @@ a ~/.proBase file containing the path. The .proBase file can contain many lines
 each with a path to a folder to search. Pro will search the path in the PRO_BASE
 variable as well as all paths in the .proBase file. If neither exists then the home
 directory will be used.
+
+## Indexing
+
+Whenever you run a `pro` command or `pd` it will kick off a background indexing process.
+This process can run anywhere from less than a second to a minuted depending on the number
+of files in your pro bases.
+
+On update the cache is invalidated and you may have to wait a while before your command
+finishes.
 
 ## Installation
 
@@ -89,6 +97,8 @@ You may also want to set your Pro Base. See the above section.
     pro status <name> - prints the output of 'git status' on the repo.
     pro run - prompts for a command to run in all git repos.
     pro run <command> - runs the given command in all git repos.
+    pro list - prints the paths to all repos. Intended for scripting.
+    pro bases - prints the paths to all bases. Intended for scripting.
     pro install - Install the pro cd command. cd to a directory by fuzzy git repo matching.
     pro help - display help
 
