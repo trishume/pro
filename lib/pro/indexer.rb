@@ -96,7 +96,8 @@ module Pro
     end
 
     def index_repos_fast(base)
-      res = `find #{base} -name .git`
+      Dir.chdir(base)
+      res = `find . -name .git`
       # turn the output into a list of repos
       repos = []
       res.each_line do |line|
