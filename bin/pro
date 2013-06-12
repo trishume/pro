@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 # vi: set filetype=ruby fileencoding=UTF-8 shiftwidth=2 tabstop=2 expandtab
 
-require "pro"
-require "yaml"
+PROFILER_OUT=nil
 
-$pryAvailable = true
-begin
-  require "pry"
-rescue LoadError
-  $pryAvailable = false
+if PROFILER_OUT
+  require "ruby-prof"
+  RubyProf.start
 end
 
+require "pro"
+require "yaml"
 
 HELP = <<END
 pro is a command to help you manage your git repositories.
@@ -63,6 +62,7 @@ command = ARGV.shift || 'help'
 
 case command
 when 'debug'
+  require "pry"
   binding.pry if $pryAvailable
 when 'search'
   puts pro.find_repo(ARGV.first)
@@ -97,3 +97,9 @@ when '-v'
   puts "http://github.com/trishume/pro"
 end
 
+if PROFILER_OUT
+  result  = RubyProf.stop
+  printer = RubyProf::GraphHtmlPrinter.new(result)
+  f = File.open(PROFILER_OUT, "w+")
+  printer.print(f)
+end

@@ -34,9 +34,10 @@ module Pro
 
     # spins off a background process to update the cache file
     def run_index_process
-      fork {
+      p1 = fork {
         index_process unless File.exists?(INDEXER_LOCK_PATH)
       }
+      Process.detach(p1)
     end
 
     def index_process
