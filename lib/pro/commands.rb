@@ -48,9 +48,9 @@ module Pro
 
     def run_command(command, confirm = true)
       if confirm
-        print "Do you really want to run '#{command.bold}' on all repos [Y/n]? "
-        ans = STDIN.gets
-        return if ans.chomp != "Y"
+        print "Do you really want to run '#{command.bold}' on all repos [Yn]? "
+        ans = STDIN.gets.chomp.downcase
+        return unless ans == 'y' || ans.empty?
       end
       @index.each do |r|
         Dir.chdir(r.path)
@@ -119,7 +119,7 @@ module Pro
     def install_cd
       puts CD_INFO
       print "Continue with installation (yN)? "
-      return unless gets.chomp == "y"
+      return unless gets.chomp.downcase == "y"
       # get name
       print "Name of pro cd command (default 'pd'): "
       name = gets.strip
@@ -132,8 +132,8 @@ module Pro
         path = File.expand_path(rel_path)
         next unless File.exists?(path)
         # ask the user if they want to add it
-        print "Install #{name} function to #{rel_path} (yN): "
-        next unless gets.chomp == "y"
+        print "Install #{name} function to #{rel_path} [yN]: "
+        next unless gets.chomp.downcase == "y"
         # add it on to the end of the file
         File.open(path,'a') do |file|
           file.puts func

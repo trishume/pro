@@ -121,8 +121,6 @@ module Pro
           repos << Repo.new(base_name,path)
           Find.prune
         end
-        # slow down
-        sleep(1.0/10000.0) if @low_cpu
       end
       repos
     end
