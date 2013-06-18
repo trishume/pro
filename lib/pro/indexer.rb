@@ -1,5 +1,6 @@
 require "pro/index"
 require "colored"
+require "yaml"
 module Pro
   # creates an index object from cache
   # or by searching the file system

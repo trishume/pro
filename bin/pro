@@ -9,7 +9,6 @@ if PROFILER_OUT
 end
 
 require "pro"
-require "yaml"
 
 HELP = <<END
 pro is a command to help you manage your git repositories.
@@ -63,7 +62,7 @@ command = ARGV.shift || 'help'
 case command
 when 'debug'
   require "pry"
-  binding.pry if $pryAvailable
+  binding.pry
 when 'search'
   puts pro.find_repo(ARGV.first)
 when 'install'
