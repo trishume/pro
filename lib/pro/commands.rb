@@ -28,7 +28,9 @@ END
 
 module Pro
   class Commands
-    DIRTY_MESSAGE = 'uncommitted'.red
+    EMPTY_MESSAGE = 'empty'.green
+    UNCOMMITTED_MESSAGE = 'uncommitted'.red
+    UNTRACKED_MESSAGE = 'untracked'.magenta
     UNPUSHED_MESSAGE = 'unpushed'.blue
     JOIN_STRING = ' + '
 
@@ -89,18 +91,38 @@ module Pro
     # returns a short status message for the repo
     def repo_status(path)
       messages = []
-      messages << DIRTY_MESSAGE unless repo_clean?(path)
+      messages << EMPTY_MESSAGE if repo_empty?(path)
+      messages << UNCOMMITTED_MESSAGE if commit_pending?(path)
+      messages << UNTRACKED_MESSAGE if untracked_files?(path)
       messages << UNPUSHED_MESSAGE if repo_unpushed?(path)
       messages.join(JOIN_STRING)
     end
 
-    # Checks if there are any uncommitted changes
-    def repo_clean?(path)
+    # Checks if there are nothing in the repo
+    def repo_empty?(path)
       status = ""
       Dir.chdir(path) do
         status = `git status 2>/dev/null`
       end
-      return status.end_with?("(working directory clean)\n") || status.end_with?("working directory clean\n")
+      return status.include?("Initial commit")
+    end
+
+    # Checks if there are pending commits / edited files
+    def commit_pending?(path)
+      status = ""
+      Dir.chdir(path) do
+        status = `git status 2>/dev/null`
+      end
+      return status.include?("Changes to be committed") || status.include?("Changes not staged for commit")
+    end
+
+    # Checks if there are untracked files in the repo
+    def untracked_files?(path)
+      status = ""
+      Dir.chdir(path) do
+        status = `git status 2>/dev/null`
+      end
+      return status.include?("Untracked files")
     end
 
     # Finds if there are any commits which have not been pushed to origin
