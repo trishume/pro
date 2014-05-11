@@ -35,7 +35,12 @@ module Pro
 
     # spins off a background process to update the cache file
     def run_index_process
+      readme, writeme = IO.pipe
       p1 = fork {
+        # Stop cd function from blocking on fork
+        STDOUT.reopen(writeme)
+        readme.close
+
         index_process unless File.exists?(INDEXER_LOCK_PATH)
       }
       Process.detach(p1)
