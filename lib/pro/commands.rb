@@ -58,7 +58,11 @@ module Pro
       @index.each do |r|
         Dir.chdir(r.path)
         stdin, result, wait_thr = Open3.popen2e(command)
-        puts "#{r.name}:".bold.red
+        if wait_thr.value == 0
+          puts "#{r.name}:".bold.green
+        else
+          puts "#{r.name}:".bold.red
+        end
         puts result.read
         [stdin, result].map &:close
       end
