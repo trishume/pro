@@ -2,6 +2,7 @@ require "pro/index"
 require "find"
 require "fuzzy_match"
 require "colored"
+require "open3"
 
 SHELL_FUNCTION = <<END
 
@@ -40,7 +41,7 @@ module Pro
 
     # Fuzzy search for a git repository by name
     # Returns the full path to the repository.
-    # 
+    #
     # If name is nil return the pro base.
     def find_repo(name)
       return @index.base_dirs.first unless name
@@ -56,9 +57,10 @@ module Pro
       end
       @index.each do |r|
         Dir.chdir(r.path)
-        result = `#{command}`
+        stdin, result, wait_thr = Open3.popen2e(command)
         puts "#{r.name}:".bold.red
-        puts result
+        puts result.read
+        [stdin, result].map &:close
       end
     end
 
