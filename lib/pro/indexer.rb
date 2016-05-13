@@ -104,12 +104,20 @@ module Pro
 
     def index_repos_fast(base)
       Dir.chdir(base)
-      res = `find . -name .git`
-      # turn the output into a list of repos
+      git_paths = `find . -name .git`.lines
+      # additionally, index repos symlinked directly from a base root
+      dirs     = `find -L . -maxdepth 1 -type d`.lines
+      symlinks = `find    . -maxdepth 1 -type l`.lines
+      # intersect those two results
+      dir_sl = dirs & symlinks
+      dir_sl_git_paths = dir_sl.
+        map {|path| path.chomp + '/.git'}.
+        select {|path| File.exists?(path)}
+      # turn the command outputs into a list of repos
       repos = []
-      res.each_line do |line|
-        next if line.empty?
-        git_path = File.expand_path(line.chomp)
+      (git_paths + dir_sl_git_paths).each do |git_path|
+        next if git_path.empty?
+        git_path = File.expand_path(git_path.chomp)
         path = File.dirname(git_path)
         repo_name = File.basename(path)
         repos << Repo.new(repo_name,path)
@@ -122,8 +130,14 @@ module Pro
       STDERR.puts "WARNING: pro is indexing slowly, please install the 'find' command."
       repos = []
       Find.find(base) do |path|
+        target = path
+        # additionally, index repos symlinked directly from a base root
+        if FileTest.symlink?(path)
+          next if File.dirname(path) != base
+          target = File.readlink(path)
+        end
         # dir must exist and be a git repo
-        if FileTest.directory?(path) && File.exists?(path+"/.git")
+        if FileTest.directory?(target) && File.exists?(path+"/.git")
           base_name = File.basename(path)
           repos << Repo.new(base_name,path)
           Find.prune
