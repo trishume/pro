@@ -56,6 +56,7 @@ module Pro
         return unless ans == 'y' || ans.empty?
       end
       @index.each do |r|
+        next unless Dir.exists?(r.path)
         Dir.chdir(r.path)
         stdin, result, wait_thr = Open3.popen2e(command)
         if wait_thr.value == 0
@@ -87,6 +88,7 @@ module Pro
     def status()
       max_name = @index.map {|repo| repo.name.length}.max + 1
       @index.each do |r|
+        next unless Dir.exists?(r.path)
         status = repo_status(r.path)
         next if status.empty?
         name = format("%-#{max_name}s",r.name).bold
